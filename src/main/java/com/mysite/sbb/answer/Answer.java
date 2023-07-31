@@ -1,8 +1,11 @@
-package com.mysite.sbb;
+package com.mysite.sbb.answer;
 
 import java.time.LocalDateTime;		//그 지역에 맞도록 날짜와 시간을 등록 
 
 import org.springframework.data.annotation.CreatedDate;
+
+import com.mysite.sbb.question.Question;
+import com.mysite.sbb.user.SiteUser;
 
 import jakarta.persistence.Column;
 import jakarta.persistence.Entity;
@@ -30,7 +33,8 @@ public class Answer {
 	@GeneratedValue(strategy = GenerationType.IDENTITY)
 	private Integer id; 
 	
-	@Column(columnDefinition = "text")
+	//@Column(columnDefinition = "text")		//Orale DB에 존재하지 않는 자료형 
+	@Column(length=4000)
 	private String content; 
 	
 	@CreatedDate
@@ -43,5 +47,7 @@ public class Answer {
 	@ManyToOne         //   답변(Answer) : Many   ======>   질문(Question)  : one
 	private Question question; 
 	
-
+	// Foreign Key :    
+	@ManyToOne
+	private SiteUser author; 
 }

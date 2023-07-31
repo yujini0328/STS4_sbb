@@ -27,3 +27,121 @@
   		delete() :    delete 
   		count() : 	<Question 테이블의 레코드의 총 갯수 > 
   		
+  		
+ //Spring Boot : MVC 개발 하는 로직 
+  
+ client =====> Controller =====>Service =====> Repository ===> Entity ===> DB Table  		
+  	
+   Service Layer 를 두는 이유 : 
+      - 반복된 코드를 줄여줄 수 있음. 
+      - 보안 	
+      
+   * Controller 에서 직접 Repository 를 접근 하지 않는다. 중복된 코드가 반복 될수 있다. 
+   		
+ Spring IoC 컨테이너에 Bean(객체) 생성하는 어노테이션 
+   - Spring 에서는 객체를 생성해서 컨테이너에 로드 
+   - 클래스 상단에 설정 
+   	- @Component   : 일반적인 객체를 Bean에 등록  
+   	- @Controller  : Controller class	: 1. 클라이언트요청 , 2. service (비즈니스로직처리), 3. view
+   	- @Service 	   : Service class		: 비즈니스 로직을 처리 , Repository 에 일을 처리 
+   	- @Repository  : Repository class   : DB의 CRUD 메소드 
+  
+ DI (의존성 주입) : IoC 컨테이너에 생성된 객체를 변수에 주입 
+   - @Autowired    : 타입을 검색해서 컨테이너에 객체를 주입 , 비슷한 타입의 구현한 객체가 여러개인 경우 문제가 발생  
+   		//@Test : 테이스 할때 사용 
+   - 생성자를 이용한 주입 : (권장 사항)    <=== @RequiredArgsConstructor ( 클래스 위에 할당 ) 
+   		private final QuestionRepository questionRepository ; 
+   				 
+   - Setter를 이용한 주입 
+   
+ ===============================================
+ src/main/resources 
+   - templates : thymeleaf  뷰 페이지가 위치 , *.html 
+   - static : 외부의 css, 외부의 javascript 가 위치 해야 하는 곳 , bootstrap 의 파일. css , js
+   
+ 
+ 
+ form 에 변수에 들어오는 값을 체크 : 유효성 체크 ( 빈값, 메일주소형식, 숫자) 
+   - 1. 라이브러리가 등록    : implementation 'org.springframework.boot:spring-boot-starter-validation'
+   - 2. QuestionForm : dto 
+   
+   		@NotEmpty(message="제목을 필수 항목입니다.") 필드 위에 유효성 확인 어노테이션 적용 
+   		@Size(max=200)
+		private String subject;
+   - 3. Controller 
+   		 메소드 내부에 (@Valid QuestionForm questionForm, BindingResult bindingResult) 
+   
+   ==============================================================
+   
+   Paging 처리 
+     - JPA 라이브러리 등록 , JPA에 등록된 객체가 자동으로 페이징 처리를 아주 쉽게 한다. 
+     
+      org.springframework.data.domain.Page 
+      org.springframework.data.domain.PageRequest
+      org.springframework.data.domain.Pageable  			<== 
+      
+      -- 레파지토리에서 설정 ( pageable : 요청한 페이지 번호, 레코드갯수)
+      Page<Question> findAll(Pageable pageable);  
+     
+   	  -- 서비스에서 컨트롤러로부터 클라이언트가 요청한 페이지번호를 받아서 pageable 객체에 할당, 레코드 수 할당. 
+   	  
+  =================================
+  인증 ( Authentication ) :  ID (IDentity) + Password 를 확인 하는 작업  
+  허가 ( Authorization ) :  인증된 사용자에게 권한을 부여하는 작업 
+  		-- Admin 
+  		-- User
+  		
+  		sec:Authorize = "isAnonymous()"  : 로그인 되지 않는 상태 (true)
+  		sec:Authorize = "isAuthenticated() : 로그인된 상태 (true) 
+  		
+   
+   
+   
+   
+   
+   
+   
+   
+   
+   
+   
+   
+   
+   
+   
+   
+   
+   
+   
+   
+   
+   
+   
+   
+   
+  
+  
+  
+  
+  
+  
+  
+  
+  
+  
+  
+  		
+  		
+  		
+  		
+  		
+  		
+  		
+  		
+  		
+  		
+  		
+  		
+  		
+  		
+  		

@@ -1,0 +1,48 @@
+<!DOCTYPE html>
+<html>
+<head>
+<meta charset="UTF-8">
+<title>나의 게시판 : </title>
+    <meta name="viewport" content="width=device-width, initial-scale=1, shrink-to-fit=no">
+    <!-- Bootstrap CSS -->
+    <link rel="stylesheet" type="text/css" th:href="@{/bootstrap.min.css}">
+
+    <!-- sbb CSS -->
+    <link rel="stylesheet" type="text/css" th:href="@{/style.css}">
+    
+
+
+</head>
+<body>
+	<!-- layout.html : 템플릿 페이지 , 모든 타임리프 페이지에서 적용되는 페이지 
+		모든 페이지에서 css, js, bootstrap  
+	-->
+	
+	<!-- navbar.html 불러 들이기 : 외부 파일 불러 들이기 -->
+	<nav th:replace="~{navbar::navbarFragment}"></nav>
+	
+	<!-- 모든 페이지가 적용되는 html --> 
+	<th:block layout:fragment="content"> </th:block>
+	
+	
+	<br> 
+	하단 푸터 
+
+    <!-- Bootstrap JavaScript --> 
+    <script th:src="@{/bootstrap.min.js}"></script>
+    
+    <script type='text/javascript'>
+		const delete_elements = document.getElementsByClassName("delete");
+		Array.from(delete_elements).forEach(function(element) {
+		    element.addEventListener('click', function() {
+		        if(confirm("정말로 삭제하시겠습니까?")) {
+		            location.href = this.dataset.uri;
+		        };
+		    });
+		});
+	</script>
+
+
+    
+</body>
+</html>

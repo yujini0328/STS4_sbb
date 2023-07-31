@@ -1,0 +1,112 @@
+
+<html layout:decorate="~{layout}">
+	
+
+
+<div layout:fragment="content" class="container my-3">
+	
+    <!-- 질문 -->
+    <h2 class="border-bottom py-2" th:text="${question.subject}"></h2>
+    <div class="card my-3">
+        <div class="card-body">
+            <div class="card-text" style="white-space: pre-line;" th:text="${question.content}"></div>
+            <div class="d-flex justify-content-end">
+                <div class="badge bg-light text-dark p-2 text-start">
+					<!-- 글쓴이 추가 --> 
+					<div class = "mb-2" th:if ="${question.author != null}" th:text="${question.author.username}"></div>
+                    <div th:text="${#temporals.format(question.createDate, 'yyyy-MM-dd HH:mm')}"></div>
+                </div>
+            </div>
+            
+            <!-- 수정 버튼 시작 : 자신의 계정으로 로그온 했을때만 출력되어야 함.  
+                 sec:authorize ="isAuthenticated()" : 로그인 되었을때만 출력 
+                 #authentication.getPrincipal().getUsername() : 현재 브라우저에서 로그인 한 계정 
+                 question.author.username : DB에서 글을쓴 사용자의 계정정보 
+            --> 
+            <div class="my-3"> 
+				<a class="btn btn-sm btn-outline-secondary" 
+				sec:authorize ="isAuthenticated()"
+				th:if ="${question.author != null and #authentication.getPrincipal().getUsername() ==
+						question.author.username}"
+				th:href="@{|/question/modify/${question.id}|}" th:text="수정"> </a>	
+				
+				<a 
+				href="javascript:void(0);"
+				th:data-uri="@{|/question/delete/${question.id}|}"	
+				class="delete btn btn-sm btn-outline-secondary" 
+				sec:authorize ="isAuthenticated()"
+				th:if ="${question.author != null and #authentication.getPrincipal().getUsername() ==
+						question.author.username}"
+				th:text="삭제"
+				></a>	
+			</div>
+            <!-- 수정 버튼 시작 --> 
+        </div>
+    </div>
+    
+    
+    <!-- 답변의 갯수 표시 -->
+    <h5 class="border-bottom my-3 py-2" 
+        th:text="|${#lists.size(question.answerList)}개의 답변이 있습니다.|"></h5>
+    <!-- 답변 반복 시작 -->
+    <div class="card my-3" th:each="answer : ${question.answerList}">
+        <div class="card-body">
+            <div class="card-text" style="white-space: pre-line;" th:text="${answer.content}"></div>
+            <div class="d-flex justify-content-end">
+                <div class="badge bg-light text-dark p-2 text-start">
+					<!-- 답변글쓴이 출력 --> 
+					<div class = "mb-2" th:if ="${answer.author != null}" th:text="${answer.author.username}"> </div>
+                    <div th:text="${#temporals.format(answer.createDate, 'yyyy-MM-dd HH:mm')}"></div>
+                </div>
+            </div>
+            
+            <!-- 답변의 수정버튼, 삭제 버튼 --> 
+            <div class="my-3">
+				<a
+				  class="btn btn-sm btn-outline-secondary"
+				  sec:authorize="isAuthenticated()"
+				  th:if ="${answer.author != null and 
+				  		#authentication.getPrincipal().getUsername() == answer.author.username}"
+				  th:href="@{|/answer/modify/${answer.id}|}"	
+				  th:text="수정"
+				>				
+				</a>
+				
+				<a
+				  href="javascript:void(0)"
+				  th:data-uri="@{|/answer/delete/${answer.id}|}"
+				  
+				  class="delete btn btn-sm btn-outline-secondary"
+				  sec:authorize="isAuthenticated()"
+				  th:if ="${answer.author != null and 
+				  		#authentication.getPrincipal().getUsername() == answer.author.username}"
+				  
+				  th:text="삭제"
+				>
+					
+				</a>
+				
+				
+			</div>
+                       
+        </div>
+    </div>
+    <!-- 답변 반복 끝  -->
+    <!-- 답변 작성 -->
+    <form th:action="@{|/answer/create/${question.id}|}" th:object="${answerForm}" method="post" class="my-3">
+ 
+		<!-- 외부의 파일을 불러 들임 --> 
+		<div th:replace="~{formErrors::formErrorsFragment}"></div>
+		
+		<!-- 로그인 하지않았을때는 <textarea> 를 비활성화  --> 
+        <textarea sec:authorize="isAnonymous()" disabled th:field="*{content}" rows="10" class="form-control"></textarea>
+        <!-- 로그인 되었을때 <textarea> 를 활성화  --> 
+        <textarea sec:authorize="isAuthenticated()" th:field="*{content}" rows="10" class="form-control"></textarea>
+        <!-- th:field="*{content} : name="content", id="content", value="content" -->
+        
+        <input type="submit" value="답변등록" class="btn btn-primary my-2">
+    </form>
+</div>
+	
+
+</html>

@@ -7,6 +7,12 @@ import org.springframework.web.bind.annotation.ResponseBody;
 @Controller
 public class TestController {
 	
+	@GetMapping("/boot")			//http://localhost:9696/boot
+	public String bootStrap() {
+		
+		return "/test/BootStrap_test"; 
+	}
+	
 	//http://localhost:9696/test
 	@GetMapping("/test4")
 	@ResponseBody
