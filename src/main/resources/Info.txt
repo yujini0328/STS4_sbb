@@ -94,54 +94,64 @@
   		sec:Authorize = "isAnonymous()"  : 로그인 되지 않는 상태 (true)
   		sec:Authorize = "isAuthenticated() : 로그인된 상태 (true) 
   		
+ ===========================================================
+ @ManytoOne     : FetchType.EAGER
+ @OnetoOne		: FetchType.EAGER
+ @OnetoMany     : FetchType.LAZY
+ @ManytoMany    : FetchType.LAZY
+ 
+ 즉시 로딩 : FetchType.EAGER		<== RAM 을 많이 차지하고 부하가 많이 걸림
+ 	
+ 지연 로딩 : FetchType.LAZY        <== 지연로딩을 권장, 요청이 있을때 로딩 해서 적용  
    
+ 사용법 : 
+ 	@ManyToMany (fetch = FetchType.LAZY)   
    
-   
-   
-   
-   
-   
-   
-   
-   
-   
-   
-   
-   
-   
-   
-   
-   
-   
-   
-   
-   
-   
-   
-   
-  
-  
-  
-  
-  
-  
-  
-  
-  
-  
-  
-  		
-  		
-  		
-  		
-  		
-  		
-  		
-  		
-  		
-  		
-  		
-  		
-  		
-  		
-  		
+ ========================================================
+ 검색 기능 쿼리 
+ // 검색어 : 스프링 
+// Question : subject , content 에서 검색 
+select * from question where subject like '%스프링%' or content like '%스프링%'
+
+// Answer : content 
+select * from answer where content like '%스프링%'
+
+//Site_user : username 
+select * from site_user where username like '%스프링%'
+
+=========================================================
+Question , Answer, SiteUser 에서 한꺼번에 검색을 적용 :  Left Outer JOIN 을 사용해서 한번에 
+
+select  distinct * 
+from question q 
+        LEFT OUTER JOIN Site_User u1 
+	      ON q.author_id = u1.id 
+        LEFT OUTER JOIN answer a 
+	      ON q.id = a.question_id
+        LEFT OUTER JOIN Site_User u2
+              ON a.author_id = u2.id
+
+where q.subject like '%스프링%' 
+      or q.content like '%스프링%' 
+      or u1.username like '%스프링%'
+	  or a.content like '%스프링%'
+	  or u2.username like '%스프링%'
+	  
+============주의 : 테이블 명이 아니라 메소드 명으로 매핑 =======================================
+	
+	@Query("select  distinct q "
+			+ " from Question q "
+			+ "        LEFT OUTER JOIN SiteUser u1 "
+			+ "	      ON q.author = u1 "
+			+ "        LEFT OUTER JOIN Answer a "
+			+ "	      ON a.question = q "
+			+ "        LEFT OUTER JOIN SiteUser u2 "
+			+ "              ON a.author = u2 "
+			+ " where q.subject like %:kw% "
+			+ "      or q.content like %:kw% "
+			+ "      or u1.username like %:kw% "
+			+ "      or a.content like %:kw% "
+			+ "      or u2.username like %:kw% ")
+	Page<Question> findAllByKeyword(@Param("kw") String kw , Pageable pageable); 
+ 
+ 

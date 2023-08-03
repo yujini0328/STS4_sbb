@@ -9,8 +9,22 @@
     <h2 class="border-bottom py-2" th:text="${question.subject}"></h2>
     <div class="card my-3">
         <div class="card-body">
+			<!-- 마크다운 추가됨 시작  -->
+			<div class="card-text" th:utext="${@commonUtil.markdown(question.content)}"></div>
+			<!-- 마크다운 추가됨 끝  -->
+			<!-- 마크다운 적용전 원본 
             <div class="card-text" style="white-space: pre-line;" th:text="${question.content}"></div>
+            -->
             <div class="d-flex justify-content-end">
+				
+				<!-- 글 수정 날짜 추가 <시작> --> 
+				<div th:if = "${question.modifyDate != null}" 
+					class="badge bg-light text-dark p-2 text-start mx-3"> 
+					<div class="mb-2">글 수정 날짜</div>
+					<div th:text ="${#temporals.format(question.modifyDate, 'yyyy-MM-dd HH:mm')}"></div>
+				</div>
+				<!-- 글 수정 날짜 추가 <끝> --> 
+				
                 <div class="badge bg-light text-dark p-2 text-start">
 					<!-- 글쓴이 추가 --> 
 					<div class = "mb-2" th:if ="${question.author != null}" th:text="${question.author.username}"></div>
@@ -24,6 +38,15 @@
                  question.author.username : DB에서 글을쓴 사용자의 계정정보 
             --> 
             <div class="my-3"> 
+				<!-- 추천 버튼 등록 시작 -->
+				<a
+					href="javascript:void(0)" class="recommend btn btn-sm btn-outline-secondary"
+					th:data-uri = "@{|/question/vote/${question.id}|}"
+				> 추천 <span class="badge rounded-pill bg-success"
+				 		th:text="${#lists.size(question.voter)}"> </span>				
+				</a>
+				<!-- 추천 버튼 등록 끝 -->
+				
 				<a class="btn btn-sm btn-outline-secondary" 
 				sec:authorize ="isAuthenticated()"
 				th:if ="${question.author != null and #authentication.getPrincipal().getUsername() ==
@@ -50,9 +73,32 @@
         th:text="|${#lists.size(question.answerList)}개의 답변이 있습니다.|"></h5>
     <!-- 답변 반복 시작 -->
     <div class="card my-3" th:each="answer : ${question.answerList}">
+		
+		<!-- anker 태그에 id 값을 부여해서 해당 위치에 고정 되도록 설정 
+				http://localhost:9696/question/ditail/10#answer_7
+		--> 
+		<a th:id = "|answer_${answer.id}|"></a>
+		
+		
         <div class="card-body">
+			
+			<!-- 마크다운 추가 시작 --> 
+			<div class="card-text" th:utext="${@commonUtil.markdown(answer.content)}"> </div>
+			<!-- 마크다운 추가 끝 --> 
+			
+			<!-- 마크다운 전 원본 출력
             <div class="card-text" style="white-space: pre-line;" th:text="${answer.content}"></div>
+            -->
+            
             <div class="d-flex justify-content-end">
+				
+				<!-- 답변의 수정날짜 추가 - <시작> -->
+				<div th:if = "${answer.modifyDate != null}" class="badge bg-light text-dark p-2 text-start">
+					<div class = "mb-2"> 답변 수정 날짜</div>
+					<div th:text="${#temporals.format(answer.modifyDate, 'yyyy-MM-dd HH:mm')}"></div>				
+				</div>				
+				<!-- 답변의 수정날짜 추가 - <끝> -->
+							
                 <div class="badge bg-light text-dark p-2 text-start">
 					<!-- 답변글쓴이 출력 --> 
 					<div class = "mb-2" th:if ="${answer.author != null}" th:text="${answer.author.username}"> </div>
@@ -62,6 +108,18 @@
             
             <!-- 답변의 수정버튼, 삭제 버튼 --> 
             <div class="my-3">
+				
+				<!-- 답변 추천 버튼 등록 시작 -->
+				<a
+					href="javascript:void(0)" class="recommend btn btn-sm btn-outline-secondary"
+					th:data-uri = "@{|/answer/vote/${answer.id}|}"
+				> 추천 <span class="badge rounded-pill bg-success"
+				 		th:text="${#lists.size(answer.voter)}"> </span>				
+				</a>
+				<!-- 답변 추천 버튼 등록 끝 -->
+				
+				
+				
 				<a
 				  class="btn btn-sm btn-outline-secondary"
 				  sec:authorize="isAuthenticated()"
@@ -107,6 +165,30 @@
         <input type="submit" value="답변등록" class="btn btn-primary my-2">
     </form>
 </div>
+
+    <script layout:fragment="script" type='text/javascript'>
+		
+		const delete_elements = document.getElementsByClassName("delete");
+		Array.from(delete_elements).forEach(function(element) {
+		    element.addEventListener('click', function() {
+		        if(confirm("정말로 삭제 하시겠습니까?")) {
+		            location.href = this.dataset.uri;
+		        };
+		    });
+		});
+		
+		
+		const recommend_elements = document.getElementsByClassName("recommend");
+		Array.from(recommend_elements).forEach(function(element) {
+		    element.addEventListener('click', function() {
+		        if(confirm("정말로 추천 하시겠습니까?")) {
+		            location.href = this.dataset.uri;
+		        };
+		    });
+		});
+				
+	</script>
+
 	
 
 </html>

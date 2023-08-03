@@ -4,6 +4,7 @@ import java.security.Principal;
 import java.util.List;
 
 import org.springframework.data.domain.Page;
+import org.springframework.http.HttpStatus;
 import org.springframework.security.access.prepost.PreAuthorize;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
@@ -13,6 +14,7 @@ import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestParam;
+import org.springframework.web.server.ResponseStatusException;
 
 import com.mysite.sbb.answer.AnswerForm;
 import com.mysite.sbb.user.SiteUser;
@@ -39,12 +41,15 @@ public class QuestionController {
 	
 	// http://localhost:9696/question/list?page=1
 	
-	@GetMapping ("/list")			//  /question/list
-	public String list(Model model , @RequestParam(value="page", defaultValue="0") int page ) {
+	@GetMapping ("/list")			//  /question/list?kw=스프링&page=0
+	public String list(Model model , 
+			@RequestParam(value="page", defaultValue="0") int page, 
+			@RequestParam(value = "kw", defaultValue="") String kw
+			) {
 		//1. client 요청을 받는다. http://localhost:9696/question/list
 		
 		//2. 비즈 니스 로직 처리 
-		Page<Question> paging = questionService.getList(page) ;
+		Page<Question> paging = questionService.getList( page, kw) ;
 		/*
 		System.out.println("페이지 존재 여부 : " + paging.isEmpty());
 		System.out.println("전체 게시물수(레코드수) : " + paging.getTotalElements());
@@ -58,6 +63,8 @@ public class QuestionController {
 		
 		//3. 받아온 List를 client 로 전송 ( Model 객체에 저장해서 Cient로 전송 )  
 		model.addAttribute("paging", paging); 
+		model.addAttribute("kw", kw); 
+		
 		
 		return "question_list"; 
 	}
@@ -163,11 +170,17 @@ public class QuestionController {
 			
 			return "question_form"; 
 		}
-		
-		
-		
+				
 		// 1. id 변수를 가지고 Question 객체 호출 
 		Question question = questionService.getQuestion(id); 
+		
+		// 현재 로그온한 계정이 질문작성자가 아닐때 삭제할 권한이 없다고 오류 메세지 발송후 
+		if ( !question.getAuthor().getUsername().equals(principal.getName())) {
+			// DB에 질문을 등록한 계정과 현재 로그온한 계정이 같지 않을때 예외 강제 발생
+			throw new ResponseStatusException(HttpStatus.BAD_REQUEST, "글 수정 권한이 없습니다."); 
+		}
+		
+		
 		
 		//글 수정 
 		questionService.modify(question, questionForm.getSubject(), questionForm.getContent()); 
@@ -197,6 +210,29 @@ public class QuestionController {
 	}
 	
 	
+	// 투표 등록 
+	@PreAuthorize("isAuthenticated")
+	@GetMapping("/vote/{id}")
+	public String questionVote(
+			@PathVariable("id") Integer id, 
+			Principal principal
+			
+			) {
+		
+		// id 값을 가지고 question 객체 반환 
+		Question question = 
+				questionService.getQuestion(id); 
+		
+		// principal 객체를 가지고 현재 로그인한 계정의 SiteUser 객체를 반환 
+		SiteUser siteUser = 
+				userService.getUser(principal.getName()); 
+		
+		//vote 메소드에 question 객체와 siteUser 객체를 매개변수로 던짐 
+		
+		questionService.vote(question, siteUser); 
+		
+		return String.format("redirect:/question/detail/%s", id); 
+	}
 	
 
 }

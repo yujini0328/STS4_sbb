@@ -6,6 +6,8 @@ import java.util.Optional;
 import org.springframework.data.domain.Page;
 import org.springframework.data.domain.Pageable;
 import org.springframework.data.jpa.repository.JpaRepository;
+import org.springframework.data.jpa.repository.Query;
+import org.springframework.data.repository.query.Param;
 import org.springframework.stereotype.Repository;
 
 @Repository
@@ -88,6 +90,23 @@ public interface QuestionRepository extends JpaRepository<Question, Integer> {
 	// Question (질문) 의 페이징 처리 
 	Page<Question> findAll(Pageable pageable); 
 	
+	
+	//검색어를 처리한 페이징 처리 메소드 
+	// 주의 : 테이블 명이 아니라 엔티티명으로 매핑 
+	@Query("select  distinct q "
+			+ " from Question q "
+			+ "        LEFT OUTER JOIN SiteUser u1 "
+			+ "	      		ON q.author = u1 "
+			+ "        LEFT OUTER JOIN Answer a "
+			+ "	     	 	ON a.question = q "
+			+ "        LEFT OUTER JOIN SiteUser u2 "
+			+ "              ON a.author = u2 "
+			+ " where q.subject like %:kw% "
+			+ "      or q.content like %:kw% "
+			+ "      or u1.username like %:kw% "
+			+ "      or a.content like %:kw% "
+			+ "      or u2.username like %:kw% ")
+	Page<Question> findAllByKeyword(@Param("kw") String kw , Pageable pageable); 
 	
 	
 	

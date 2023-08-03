@@ -19,7 +19,7 @@ public class UserService {
 	private final UserRepository userRepository; 
 	private final PasswordEncoder passwordEncoder; 
 	
-	// Controller :  id, passwod, email 받아서 DB에 저장 하는 메소드 
+	// Controller :  id, password, email 받아서 DB에 저장 하는 메소드 
 	public SiteUser create (String username, String email , String password) {
 		SiteUser user = new SiteUser(); 
 		

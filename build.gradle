@@ -5,7 +5,7 @@ plugins {
 }
 
 group = 'com.mysite'
-version = '0.0.1-SNAPSHOT'
+version = '0.0.2-SNAPSHOT'
 
 java {
 	sourceCompatibility = '17'
@@ -63,6 +63,9 @@ dependencies {
 	
 	//MySQL Driver
 	implementation 'com.mysql:mysql-connector-j'
+	
+	//마크다운 라이브러리 추가 
+	implementation 'org.commonmark:commonmark:0.21.0'
 	
 }
 

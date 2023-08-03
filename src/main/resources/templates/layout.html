@@ -31,18 +31,10 @@
     <!-- Bootstrap JavaScript --> 
     <script th:src="@{/bootstrap.min.js}"></script>
     
-    <script type='text/javascript'>
-		const delete_elements = document.getElementsByClassName("delete");
-		Array.from(delete_elements).forEach(function(element) {
-		    element.addEventListener('click', function() {
-		        if(confirm("정말로 삭제하시겠습니까?")) {
-		            location.href = this.dataset.uri;
-		        };
-		    });
-		});
-	</script>
-
-
+    <!-- 각 페이지에서만 사용되는 자바스크립트 블락  -->
+    <th:block layout:fragment="script"></th:block>
     
+    
+ 
 </body>
 </html>

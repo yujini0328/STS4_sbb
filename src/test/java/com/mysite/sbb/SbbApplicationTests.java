@@ -31,7 +31,7 @@ class SbbApplicationTests {
 	
 	
 
-//	@Test
+	//@Test
 	void contextLoads() {
 		Question q1 = new Question(); 
 		
@@ -52,7 +52,7 @@ class SbbApplicationTests {
 	
 	}
 	
-//	@Test
+	//@Test
 	void contextLoads1() {
 		Question q3 = new Question(); 
 		
@@ -107,8 +107,7 @@ class SbbApplicationTests {
 		}
 		
 	}
-	// 제목으로 검색 Test 
-	//@Test	
+	//@Test	// 제목으로 검색 Test 
 	void searchSubject() {
 		List<Question> all = qr.findBySubject("오늘의 날씨는? "); 
 		
@@ -207,7 +206,7 @@ class SbbApplicationTests {
 	
 	
 	  // select * from question where subject Like '%?%' order by create_date Desc; 
-		@Test
+		//@Test
 		void searchSubjectAndSortDesc() {
 			List<Question> all = qr.findBySubjectLikeOrderByCreateDateDesc("%날씨%"); 
 			
@@ -266,7 +265,7 @@ class SbbApplicationTests {
 		}
 		
 		//Answer 테이블에 값을 입력 : Question 테이블을 참좀해서 값을 넣어야 한다.  
-//		@Test
+		//@Test
 		void insertAnswer() {
 			
 			Question q = new Question();
@@ -282,7 +281,7 @@ class SbbApplicationTests {
 			
 		}
 		
-//		@Test
+		//@Test
 		void insertAnswer2() {
 			Question q = new Question(); 
 			q.setId(2);
@@ -303,7 +302,7 @@ class SbbApplicationTests {
 			
 		}
 		
-//		@Test
+		//@Test
 		void insertAnswer3() {
 			Question q = new Question(); 
 			q.setId(3);
@@ -353,7 +352,7 @@ class SbbApplicationTests {
 		}
 		
 		//제목을 기준으로 오름 차순 검색 
-//		@Test
+		//@Test
 		void sortSubjectDesc() {
 			List<Question> all = qr.findAllByOrderBySubjectDesc(); 
 			
@@ -372,234 +371,256 @@ class SbbApplicationTests {
 					
 			System.out.println("=== 제목을 기준으로 내림차순 정렬 ====");
 		}
-//		@Test
+		//@Test
 		void searchDateAsc() {
-			List<Question> all = qr.findAllByOrderByCreateDateAsc();
+			List<Question> all = qr.findAllByOrderByCreateDateAsc(); 
 			
-			// List의 Question 객체를 끄집어 내서 콘솔에 출력
-			System.out.println("==== CreateDate 컬럼을 오름 차순 정렬 후 출력<시작> ======");
-			for ( int i = 0 ; i < all.size() ; i++) {
-				System.out.println("======== Question : " + i + " =============");
+			// List 의 Question 객체를 끄집어 내서 콘솔에 출력 
+			
+			System.out.println("===== CreateDate 컬럼을 오름 차순 정렬 후 출력<시작> ======");
+			for (int i = 0 ; i < all.size(); i++) {
+				System.out.println("====Question : " + i + " ============");
 				
-				Question q = all.get(i);
+				Question q = all.get(i); 
 				
-				System.out.println(q.getId());
-				System.out.println(q.getCreateDate());
-				System.out.println(q.getSubject());
-				System.out.println(q.getContent());
+				System.out.println(q.getId()); 
+				System.out.println(q.getCreateDate()); 
+				System.out.println(q.getSubject()); 
+				System.out.println(q.getContent()); 
+				
 			}
-			System.out.println("==== CreateDate 컬럼을 오름 차순 정렬 후 출력<끝> ======");
-			
-			
+			System.out.println("===== CreateDate 컬럼을 오름 차순 정렬 후 출력 <끝>======");
+				
 		}
-//		@Test
+		//@Test
 		void searchDateDesc() {
-			List<Question> all = qr.findAllByOrderByCreateDateDesc();
+			List<Question> all = qr.findAllByOrderByCreateDateDesc(); 
 			
-			// List의 Question 객체를 끄집어 내서 콘솔에 출력
-			System.out.println("==== CreateDate 컬럼을 오름 차순 정렬 후 출력<시작> ======");
-			for ( int i = 0 ; i < all.size() ; i++) {
-				System.out.println("======== Question : " + i + " =============");
+			// List 의 Question 객체를 끄집어 내서 콘솔에 출력 
+			
+			System.out.println("===== CreateDate 컬럼을 내림 차순 정렬 후 출력<시작> ======");
+			for (int i = 0 ; i < all.size(); i++) {
+				System.out.println("====Question : " + i + " ============");
 				
-				Question q = all.get(i);
+				Question q = all.get(i); 
 				
-				System.out.println(q.getId());
-				System.out.println(q.getCreateDate());
-				System.out.println(q.getSubject());
-				System.out.println(q.getContent());
+				System.out.println(q.getId()); 
+				System.out.println(q.getCreateDate()); 
+				System.out.println(q.getSubject()); 
+				System.out.println(q.getContent()); 
+				
 			}
-			System.out.println("==== CreateDate 컬럼을 오름 차순 정렬 후 출력<끝> ======");
-			
-			
+			System.out.println("===== CreateDate 컬럼을 내림 차순 정렬 후 출력 <끝>======");
+				
 		}
 		
-		//데이터 입력(save()) : Question 테이블의 값 입력
-		// Entity 클래스의 Primary Key 컬럼의 값이 비어 있으면 : insert
-//		@Test
+		
+		// 데이터 입력 (save() ) : Question 테이블의 값 입력 
+		//   Entity 클래스의 Primary Key 컬럼의 값이 비어 있으면 : insert 
+		//@Test
 		void insertQuestion4 () {
-			// Question Entity 클래스에 setter 주입으로 필드에 값을 할당. id 값을 넣지 않음.
+			// Question Entity 클래스에 setter 주입으로 필드에 값을 할당. id 값을 넣지 않음. 
 			Question q = new Question();
-			q.setSubject("제목 = 스프링 부트에 대한 질문입니다.333");
-			q.setContent("내용 - 스프링 부트에 대한 내용입니다.333");
-			q.setCreateDate(LocalDateTime.now());
-			
-			qr.save(q);
+			q.setSubject("제목 = 스프링 부트에 대한 질문 입니다.333");
+			q.setContent("내용 - 스프링 부트에 대한 내용 입니다.333");
+			q.setCreateDate(LocalDateTime.now());		
+			qr.save(q); 	
 		}
 		
-		//데이터 수정(save()) : Question 테이블의 특정 필드 수정
-		// Entity 클래스의 Primary Key 컬럼의 값이 비어 있으면 : update
-//		@Test
+		// 데이터 수정 (save() ) : Question 테이블의 특정 필드 수정 
+		//   Entity 클래스의 Primary Key 컬럼의 값이 존재하면 있으면 : update
+		//@Test
 		void modifyQuestion3 () {
-			// 기존의 Question 테이블의 레코드를 불러와서, Setter로 수정후 save();
+			//기존의 Question 테이블의 레코드를 불러와서, Setter로 수정후 save() ; 
 			Optional<Question> oq = qr.findById(6);
 			
-			if(oq.isPresent()) {
-				Question q = oq.get();
+			if ( oq.isPresent()) {
+				Question q = oq.get(); 
 				
-				q.setSubject("제목만 수정됨 ---");
+				q.setSubject("제목만 수정됨 --- ");
 				
-				qr.save(q);
-			}
+				qr.save(q); 
+				
+			}			
+			
 		}
 		
-		//삭제 : delete(), question Entity 클래스의 id 필드의 값을 setter 주입후 삭제
-//		@Test
+		//삭제 : delete() , question Entity 클래스의 id 필드의 값을 setter 주입후 삭제 
+		//@Test
 		void deleteQuestion33() {
-			Question q = new Question ();
-			q.setId(4);
+			Question q = new Question(); 
+			q.setId(7);
 			
 			qr.delete(q);
-		
+			
 		}
 		
-		//Answer의 값 insert  : 자식 테이블, 부모 테이블의 값을 참조해서 값을 넣어야 함.
-//		@Test
+		//Answer 의 값 insert : 자식 테이블 , 부모 테이블의 값을 참조해서 값을 넣어야 함. 
+		//
+		//@Test
 		void insertAnswer33() {
-			// Question 객체를 가지고 온다.
-			Optional <Question> oq = qr.findById(6);
+			// Question 객체 를 가지고 온다. 
+			Optional <Question> oq = qr.findById(4); 
 			
-			if(oq.isPresent()) {
-				Question q = oq.get();
+			if (oq.isPresent()) {
+				Question q = oq.get(); 
 				
-				//Answer 객체 생성
-				Answer a = new Answer();
+				//Answer 객체 생성 
+				Answer a = new Answer(); 
 				
-				a.setContent("6번 질문에 대한 답변 글입니다.");
+				a.setContent("4번 질문에 대한 답변 글입니다.");
 				a.setCreateDate(LocalDateTime.now());
 				a.setQuestion(q);
 				
-				ar.save(a);
-				
+				ar.save(a); 					
 			}
-		}
-		//Answer의 값을 수정 : save(), 기존의 레코드를 가져와서 수정
-//		@Test
-		void updateAnswer33() {
-			Optional<Answer> oa = ar.findById(3);
-			
-			if(oa.isPresent()) {
-				Answer a = oa.get();
-				
-				a.setContent("수정된 답변글입니다. - !!!");
-				
-				ar.save(a);
-			}
-			
 		}
 		
-		//Answer의 값 삭제 : delete()
-//		@Test
+		//Answer 의 값을 수정 : save() , 기존의 레코드를 가져와서 수정 
+		//@Test
+		void updateAnswer33 () {
+			Optional<Answer> oa = ar.findById(3);
+			
+			if ( oa.isPresent()) {
+				Answer a = oa.get(); 
+				
+				a.setContent("수정된 답변글입니다. - !!!!");
+				
+				ar.save(a); 				
+			}
+		}
+		
+		//Answer 의 값 삭제 : delete() 
+		//@Test
 		void deletAnswer33() {
 			Answer a = new Answer();
 			a.setId(7);
 			
 			ar.delete(a);
+			
 		}
 		
-		//질문에 대한 모든 답변글 읽어오기, Question Entity 클래스의
-		// 주의 : Test로 적용할때 Transaction이 분리 되어서 동일한 트랜잭션에서 처리되도록 설정
-		//@Transactional : 메소드 위에 할당. 메소드 내부의 여러 SQL 쿼리를 하나의 트랜잭션으로 처리하도록 함.
-		
-//		@Transactional
-//		@Test
-		void allAnswerList() {
-			// Question 객체의 id = 2을 읽어 온다.
-			Optional<Question> oq = qr.findById(2);
+		//질문에 대한 모든 답변글 읽어오기 , Question Entity 클래스의 
+		// 주의 : Test 로 적용 할때 Transaction 이 분리 되어서 동일한 트랜잭션에서 처리되도록 설정 
+		// @Transactional : 메소드 위에 할당. 매소드 내부의 여러 SQL 쿼리를 하나의 트랜잭션으로 처리하도록 함. 
 			
-			if(oq.isPresent()) {
-				Question q = oq.get();
+		//@Transactional
+		//@Test
+		void allAnswerList() {
+			// Question 객체의 id = 2 을 읽어 온다. 
+			Optional<Question> oq = qr.findById(3); 
+			
+			if (oq.isPresent()) {
+				Question q = oq.get(); 
 				
-				//Question answerList의 값을 getter를 사용해서 가지고 온다.
-				//all에는 question id 2에 대한 답변 레코드(Answer)가 들어가 있음.
-				List<Answer> all = q.getAnswerList();
+				//Question answerList 의 값을 getter 를 사용해서  가지고 온다. 
+				// all 에는 question id 2번에 대한 답변 레코드(Answer) 가 들어가 있음. 
+				List<Answer> all = q.getAnswerList(); 
 				
-				assertEquals (2, all.size());
+				assertEquals ( 3, all.size()); 
 				
 				System.out.println("==== 3번 글에대한 답변을 모두 출력 <시작>=======");
 				
-				for(int i = 0 ; i < all.size() ; i++) {
+				for (int i = 0 ; i < all.size(); i++) {
 					System.out.println("== Answer : " + i + "======");
-					Answer a = all.get(i);
+					Answer a = all.get(i); 
 					System.out.println(a.getId());
-					System.out.println(a.getQuestion());
+					System.out.println(a.getQuestion());   
 					System.out.println(a.getContent());
 					System.out.println(a.getCreateDate());
 				}
 				
-				System.out.println("==== 3번 글에대한 답변을 모두 출력 <끝>=======");
-			}
-		}
-		// 질문에 대한 답변글 리스트 출력 : question id 2번 글에 대한 답변 List를 출력
-		@Transactional
-		@Test
-		void allAnswerList2() {
-			Optional <Question> oq = qr.findById(2);
-			
-			if(oq.isPresent()) {
-				Question q = oq.get();
-				
-				List<Answer> all = q.getAnswerList();
-				
-				assertEquals(2, all.size());
-				
-				System.out.println("====== Answer 객체 출력 <시작> ========");
-				for(int i = 0 ; i < all.size() ; i++) {
-					System.out.println("=== Answer : " + i + "=======");
-					Answer a = all.get(i);
-					
-					System.out.println(a.getId());
-					System.out.println(a.getContent());
-					System.out.println(a.getCreateDate());
-					
-				}
-				
-				System.out.println("====== Answer 객체 출력 <시작> ========");
-				
-				
-				
-			}
-			
-		}
-		// Question 테이블에 값 넣기 / Answer 테이블 답변글 3개 넣기
-		@Test
-		void insertQuestion11() {
-			
-			Question q = new Question();
-			q.setSubject("질문 - 제목 : Framework이 무엇인가요?");
-			q.setContent("질문 - 내용 : Framework이란 구체적으로 무엇인가요?");
-			q.setCreateDate(LocalDateTime.now());
-			
-			qr.save(q);
-			
+				System.out.println("==== 3번 글에대한 답변을 모두 출력 <끝>=======");		
+			}		
 		}
 		
-		@Test
+		// 질문에대한 답변글 리스트 출력 :  question id 2 번글에대한 답변 List를 출력 
+		//@Transactional
+		//@Test
+		void allAnswerList2() {
+			Optional <Question> oq = qr.findById(2); 
+			
+			if (oq.isPresent()) {
+				Question q = oq.get(); 
+				
+				List<Answer> all = q.getAnswerList(); 
+				
+				assertEquals(2, all.size()); 
+				
+				System.out.println("===== Answer 객체 출력 <시작>======");
+				for (int i =0 ; i <all.size(); i++) {
+					System.out.println("=== Answer : " + i +"======");
+					Answer a = all.get(i); 
+					
+					System.out.println(a.getId());
+					System.out.println(a.getContent());
+					System.out.println(a.getCreateDate());			
+				}			
+				System.out.println("===== Answer 객체 출력 <끝>======");				
+			}	
+		}
+		
+		//Question 테이블에 값 넣기 / Answer 테이블 답변글 3개 넣기 
+		//@Test
+		void insertQuestion11() {
+			
+			Question q = new Question(); 
+			q.setSubject("질문- 제목 : Framework이 무엇인가요?");
+			q.setContent("질문-내용 : Framework이란 구제적으로 무엇인가요?");
+			q.setCreateDate(LocalDateTime.now());
+			
+			qr.save(q); 		
+		}
+		
+		//@Test
 		void insertAnswer11() {
-			Optional<Question> oq = qr.findById(8);
-			if(oq.isPresent()) {
+			Optional<Question> oq = qr.findById(8); 
+			if (oq.isPresent()) {
 				Question q = oq.get();
 				
-				Answer a = new Answer();
-				a.setContent("구현된 기초(템플릿) - AOP, Ioc/DI, PSA");
-				a.setCreateDate(LocalDateTime.now());
-				a.setQuestion(q);
+				Answer a = new Answer(); 
+				a.setContent("구현된 기초(템플릿)  - AOP, IoC/DI , PSA ");
+				a.setCreateDate(LocalDateTime.now()); 
+				a.setQuestion(q); 
 				
-				ar.save(a);
+				ar.save(a); 
 				
-				Answer aa = new Answer();
-				aa.setContent("22. 구현된 기초(템플릿) - AOP, Ioc/DI, PSA");
-				aa.setCreateDate(LocalDateTime.now());
-				aa.setQuestion(q);
+				Answer aa = new Answer(); 
+				aa.setContent("22. 구현된 기초(템플릿)  - AOP, IoC/DI , PSA ");
+				aa.setCreateDate(LocalDateTime.now()); 
+				aa.setQuestion(q); 
 				
-				ar.save(aa);
+				ar.save(aa); 
 				
-				Answer aaa = new Answer();
-				aaa.setContent("구현된 기초(템플릿) - AOP, Ioc/DI, PSA");
-				aaa.setCreateDate(LocalDateTime.now());
-				aaa.setQuestion(q);
+				Answer aaa = new Answer(); 
+				aaa.setContent("구현된 기초(템플릿)  - AOP, IoC/DI , PSA ");
+				aaa.setCreateDate(LocalDateTime.now()); 
+				aaa.setQuestion(q); 
 				
-				ar.save(aaa);
+				ar.save(aaa); 
+				
 			}
-			
 		}
+		
+		//페이징 처리를 위한 Question 테이블의 레코드 1000개 insert
+		@Test
+		public void insert1000Question() {
+			
+			for (int i = 1 ; i <= 1000 ; i ++ ) {
+				Question q = new Question() ; 
+				
+				q.setSubject("제목 - " + i);
+				q.setContent("내용 - " + i);
+				q.setCreateDate(LocalDateTime.now());
+				
+				qr.save(q); 
+				
+			}
+							
+		}
+		
+		
+		
+		
+
 }
